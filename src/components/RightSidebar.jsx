@@ -1,5 +1,6 @@
 import React from 'react'
 import assets from '../assets/assets'
+import { logout } from '../config/firbase'
 
 const RightSidebar = () => {
   return (
@@ -22,7 +23,7 @@ const RightSidebar = () => {
             <img src={assets.pic1} alt='' className='w-16 rounded cursor-pointer'/>
           </div>
         </div>
-        <button className='absolute bottom-5 left-5 bg-blue-500 text-white border-none text-sm cursor-pointer pt-3 pb-3 pl-16 pr-16 rounded-2xl font-normal '>Logout</button>
+        <button onClick={() => logout()} className='absolute bottom-5 left-5 bg-blue-500 text-white border-none text-sm cursor-pointer pt-3 pb-3 pl-16 pr-16 rounded-2xl font-normal '>Logout</button>
       </div>
     </>
   )
