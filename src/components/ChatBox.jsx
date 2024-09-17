@@ -1,8 +1,12 @@
-import React from 'react'
+import React, { useContext, useState } from 'react'
 import assets from '../assets/assets'
+import { AppContext } from '../context/AppContext'
 
 const ChatBox = () => {
-  return (
+    const {messages , setMessages ,chatUser , setChatUser,messagesId , setMessagesId} = useContext(AppContext)
+    const [input , setInput ] = useState('')
+
+  return chatUser ?  (
     <main className='h-[75vh] relative bg-[#f1f5ff]'>
         <div className='pt-3 pb-3 pl-4 pr-4 gap-3 flex items-center border-b-2 border-solid border-[#c6c6c6]'>
             <img src={assets.profile_img} alt='profile' className='w-9 rounded-full aspect-[1/1]'/>
@@ -45,6 +49,11 @@ const ChatBox = () => {
         </div>
     </main>
   )
+  :
+    <div className='w-full flex flex-col items-center justify-center gap-1'>
+        <img src={assets.logo_icon} alt='' className='w-16'/>
+        <p className='text-2xl font-medium text-gray-600'>Chat anytime , anywhere</p>
+    </div>
 }
 
 export default ChatBox
