@@ -8,7 +8,7 @@ import { toast } from 'react-toastify'
 import upload from '../lib/upload.js'
 
 const ChatBox = () => {
-    const {messages , setMessages ,chatUser , setChatUser,messagesId , setMessagesId , userData} = useContext(AppContext)
+    const {messages , setMessages ,chatUser ,messagesId  , userData  , setChatVisible} = useContext(AppContext)
     const [input , setInput ] = useState('')
 
     const sendMessage = async () => {
@@ -46,8 +46,6 @@ const ChatBox = () => {
         }
         setInput('')
     }
-
-
     
     //to display the mesg using id and store that msg in unsub
     useEffect(() => {
@@ -74,7 +72,6 @@ const ChatBox = () => {
         }
     }
 
-    
     //sent image function 
     const sendImage = async(e) => {
         try {
@@ -118,11 +115,11 @@ const ChatBox = () => {
     <main className='h-[75vh] relative bg-[#f1f5ff]'>
         <div className='pt-3 pb-3 pl-4 pr-4 gap-3 flex items-center border-b-2 border-solid border-[#c6c6c6]'>
             <img src={chatUser.userData.avatar} alt='profile' className='w-9 rounded-full aspect-[1/1]'/>
-            <p className='flex items-center flex-1 font-medium text-lg text-gray-700 gap-1'>{chatUser.userData.name} <img src={assets.green_dot} alt='' className='w-3'/></p>
+            <p className='flex items-center flex-1 font-medium text-lg text-gray-700 gap-1'>{chatUser.userData.name} {Date.now()-chatUser.userData.lastSeen <= 70000 ?<img src={assets.green_dot} alt='' className='w-3'/> : null}</p>
             <img src={assets.help_icon} alt='help' className='w-5'/>
+            <img onClick={()=>setChatVisible(false)} src={assets.arrow_icon} alt='back' className='w-5'/>
         </div>
         <div className='h-[calc(100%-70px)] pb-12 overflow-y-scroll hide-scrollbar flex flex-col-reverse'>
-            {/* sender */}
             {
                 messages.map((msg,index)=>(
                     <div key={index} className={`${msg.sId === userData.id ? 'flex items-center justify-end gap-1 pt-0 pb-0 pl-4 pr-4 ': 'flex flex-row-reverse items-center justify-end gap-1 pt-0 pb-0 pl-4 pr-4'}  `}>
@@ -138,23 +135,6 @@ const ChatBox = () => {
                     </div>
                 ))
             }
-
-            {/* for image
-            <div className='flex items-center justify-end gap-1 pt-0 pb-0 pl-4 pr-4'>
-                <img src={assets.pic1} alt='' className='max-w-[230px] mb-3 rounded-lg'/>
-                <div className=''>
-                    <img src={assets.profile_img}  className='w-7 aspect-[1/1] rounded-md'/>
-                    <p className='text-center text-[9px]'>2:30pm</p>
-                </div>
-            </div> */}
-            {/* receiver */}
-            {/* <div className='flex flex-row-reverse items-center justify-end gap-1 pt-0 pb-0 pl-4 pr-4'>
-                <p className='text-white bg-blue-600 p-2 max-w-[200px] text-sm font-light mb-8 rounded-e-lg rounded-t-lg'>Lorem ipsum dolor sit amet consectetur...</p>
-                <div>
-                    <img src={assets.profile_img} className='w-7 aspect-[1/1] rounded-md'/>
-                    <p className='text-center text-[9px]'>2:30pm</p>
-                </div>
-            </div> */}
         </div>
         <div className='flex items-center gap-3 pt-3 pb-3 pl-4 pr-4 bg-white absolute bottom-0 left-0 right-0 '>
             <input onChange={(e) => setInput(e.target.value)} value={input} type='text' placeholder='Send a message' className='flex-1 border-none outline-none'/>
@@ -167,7 +147,7 @@ const ChatBox = () => {
     </main>
   )
   :
-    <div className='w-full flex flex-col items-center justify-center gap-1'>
+    <div className='w-full md:flex md:flex-col items-center justify-center gap-1 hidden'>
         <img src={assets.logo_icon} alt='' className='w-16'/>
         <p className='text-2xl font-medium text-gray-600'>Chat anytime , anywhere</p>
     </div>

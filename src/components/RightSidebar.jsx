@@ -23,7 +23,7 @@ const RightSidebar = () => {
       <div className='text-white bg-[#001030] relative h-[75vh] overflow-y-scroll hide-scrollbar'>
         <div className='pt-16 text-center max-w-[70%] m-auto'>
           <img src={chatUser.userData.avatar} alt='' className='w-28 aspect-[1/1] rounded-full'/>
-          <h3 className='flex text-lg items-center justify-center gap-1 mt-1 mb-1 ml-0 mr-0'>{chatUser.userData.name}<img src={assets.green_dot} alt=''/></h3>
+          <h3 className='flex text-lg items-center justify-center gap-1 mt-1 mb-1 ml-0 mr-0'>{Date.now() - chatUser.userData.lastSeen <= 70000 ? <img src={assets.green_dot} alt='' className='w-3'/> : null}{chatUser.userData.name}</h3>
           <p className='text-sm opacity-15 font-light'>{chatUser.userData.bio}</p>
         </div>
         <hr className='text-zinc-600 mt-4 mb-4 ml-0 mr-0'/>

@@ -8,9 +8,10 @@ import { toast } from 'react-toastify'
 
 const LeftSidebar = () => {
     const navigate = useNavigate()
-    const {userData , chatData ,chatUser , setChatUser, messages , setMessages, messagesId , setMessagesId} = useContext(AppContext)
+    const {userData , chatData  , setChatUser , messagesId , setMessagesId ,chatVisible , setChatVisible} = useContext(AppContext)
     const [user , setuser] = useState(null)
     const [showSearch , setShowSearch] = useState(false)
+
 
     //logic for user search
     const inputHandler = async(e) => {
@@ -48,7 +49,7 @@ const LeftSidebar = () => {
                 setShowSearch(false)
             }
         } catch (error) {
-            
+            console.log(error)
         }
     }
 
@@ -93,11 +94,14 @@ const LeftSidebar = () => {
             console.log(item)
             setMessagesId(item.messageId);
             setChatUser(item)
+            if (window.innerWidth < 768) {
+                setChatVisible(true);
+            }
             //to set color of the last msg is it seen or not
             const userChatsRef = doc(db, 'chats' , userData.id);
             const userChatsSnapshot = await getDoc(userChatsRef)
             const userChatsData = userChatsSnapshot.data()
-            const chatIndex = userChatsData.chatsData.findIndec((c)=> c.messageId===item.messageId);
+            const chatIndex = userChatsData.chatsData.findIndex((c)=> c.messageId===item.messageId);
             userChatsData.chatsData[chatIndex].messageSeen=true;
             await updateDoc(userChatsRef , {
                 chatsData:userChatsData.chatsData
@@ -105,11 +109,10 @@ const LeftSidebar = () => {
         } catch (error) {
             toast.error(error.message)
         }
-
     }
 
   return (
-    <aside className='bg-[#001030] text-white h-[75vh]'>
+    <aside className={`bg-[#001030] text-white h-[75vh] ${chatVisible ? 'hidden' : ''}` }>
         <div className='p-5'>
             <div className='flex justify-between items-center'>
                 <img src={assets.logo} alt='logo' className='max-w-[140px] '/>
@@ -145,15 +148,6 @@ const LeftSidebar = () => {
                                 </div>
                             </div>
                         ))
-                        // (chatData && chatData.length > 0) ? chatData.map((item, index) => (
-                        //     <div onClick={() =>setChat(item)} key={index} className='flex gap-2 items-center pt-3 pb-3 pl-5 pr-5 text-sm cursor-pointer hover:bg-blue-500'>
-                        //         <img src={item.userData.avatar} alt='profile' className='w-9 aspect-[1/1] rounded-full' />
-                        //         <div className='flex flex-col'>
-                        //             <p>{item.userData.name}</p>
-                        //             <span className='text-gray-500 text-sm hover:text-white'>{item.lastMessages}</span>
-                        //         </div>
-                        //     </div>
-                        // )) : <p className='text-center'>No chats available</p>
             }
         </div>
     </aside>
@@ -161,3 +155,13 @@ const LeftSidebar = () => {
 }
 
 export default LeftSidebar
+
+// (chatData && chatData.length > 0) ? chatData.map((item, index) => (
+//     <div onClick={() =>setChat(item)} key={index} className='flex gap-2 items-center pt-3 pb-3 pl-5 pr-5 text-sm cursor-pointer hover:bg-blue-500'>
+//         <img src={item.userData.avatar} alt='profile' className='w-9 aspect-[1/1] rounded-full' />
+//         <div className='flex flex-col'>
+//             <p>{item.userData.name}</p>
+//             <span className='text-gray-500 text-sm hover:text-white'>{item.lastMessages}</span>
+//         </div>
+//     </div>
+// )) : <p className='text-center'>No chats available</p>
