@@ -2,7 +2,8 @@
 
 A responsive real-time chat application built with **React**, **Tailwind CSS**, and **Firebase**. This app allows users to authenticate, send, and receive messages in real-time with a seamless experience on both mobile and desktop devices.
 
-** Live link ** - https://chat-app-46dp.vercel.app/chat
+** Live link ** - https://chat-app-46dp.vercel.app
+
 
 ## Features
 
